@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>MAX GTI — Gym Management System</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" href="effects.css">
+
+</head>
+<body>
+
+<!-- ============================ LOGIN ============================ -->
+<div id="login">
+  <div class="lg-art">
+    <div class="brand fade-up">
+      <div class="brand-mark">MG</div>
+      <div class="brand-name">MAX<span>·</span>GTI</div>
+    </div>
+    <div class="lg-head">
+      <div class="lg-eyebrow fade-up d1">Gym Management System</div>
+      <h1 class="lg-title fade-up d2">Train hard.<br>Track everything.<br><em>Become more.</em></h1>
+      <p class="lg-sub fade-up d3">One floor, one desk, one system. Members, memberships, payments, attendance and trainers — all running off the same six tables.</p>
+    </div>
+    <div class="lg-stats fade-up d4">
+      <div class="lg-stat"><b id="lgS1">—</b><span>Members on roll</span></div>
+      <div class="lg-stat"><b id="lgS2">—</b><span>Live memberships</span></div>
+      <div class="lg-stat"><b id="lgS3">—</b><span>Certified trainers</span></div>
+    </div>
+  </div>
+  <div class="lg-form">
+    <div class="lg-card fade-up d1">
+      <div class="brand only-narrow" style="margin-bottom:26px">
+        <div class="brand-mark">MG</div><div class="brand-name">MAX<span>·</span>GTI</div>
+      </div>
+      <h2>Sign in to the front desk</h2>
+      <p class="lg-hint">Use any email and password — this is a demo build running on sample data.</p>
+      <div class="field">
+        <label for="lgEmail">Email</label>
+        <input id="lgEmail" class="inp" type="email" value="desk@maxgti.in" autocomplete="username">
+        <div class="err">Enter the email you use at the desk.</div>
+      </div>
+      <div class="field">
+        <label for="lgPass">Password</label>
+        <input id="lgPass" class="inp" type="password" value="maxgti2026" autocomplete="current-password">
+        <div class="err">Enter your password.</div>
+      </div>
+      <div class="row-between" style="margin:18px 0 22px">
+        <label class="check"><input type="checkbox" checked> Keep me signed in</label>
+        <a href="#" class="link" id="lgForgot">Forgot password?</a>
+      </div>
+      <button class="btn btn-primary btn-block" id="lgBtn">Sign in</button>
+      <div class="lg-foot">MAX GTI Gym Management System</div>
+    </div>
+  </div>
+</div>
+
+<!-- ============================ APP ============================ -->
+<div id="app" class="gone">
+  <aside class="sidebar" id="sidebar">
+    <div class="sb-brand">
+      <div class="brand-mark">MG</div>
+      <div>
+        <div class="brand-name">MAX<span>·</span>GTI</div>
+        <div class="mini" style="letter-spacing:.14em;margin-top:2px">Andheri West</div>
+      </div>
+    </div>
+    <nav class="nav" id="nav"></nav>
+    <div class="sb-foot">
+      <div class="avatar lime">GA</div>
+      <div class="who"><b>Girish Awade</b><span>Front desk manager</span></div>
+      <button class="ia" id="logout" title="Sign out" aria-label="Sign out"></button>
+    </div>
+  </aside>
+
+  <div class="main">
+    <header class="topbar">
+      <button class="burger" id="burger" aria-label="Open menu"></button>
+      <div class="crumb">MAX GTI <span style="color:var(--mute-2)">/</span> <b id="crumb">Dashboard</b></div>
+      <div class="search">
+        <span id="searchIcon"></span>
+        <input class="inp" id="globalSearch" placeholder="Search members, payments, trainers…" autocomplete="off">
+        <div id="searchResults" class="results hide"></div>
+      </div>
+      <button class="icon-btn" id="bell" title="Notifications" aria-label="Notifications"><span class="dot"></span></button>
+      <div class="avatar" title="Girish Awade">GA</div>
+    </header>
+    <main class="view" id="view"></main>
+  </div>
+</div>
+
+<div class="scrim" id="scrim"></div>
+<div id="modalRoot"></div>
+<div id="toasts"></div>
+<script src="app.js"></script>
+<script src="effects.js"></script>
+</body>
+</html>

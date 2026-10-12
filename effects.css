@@ -1,0 +1,98 @@
+/* ============================================================
+   MAX GTI — visual effects
+   Vanilla ports of three React Bits components:
+     Antigravity  → magnetic particle ring on the login art panel
+     Shuffle      → per-letter roll-in on headings
+     MagicBento   → spotlight, border glow, star particles, tilt,
+                    magnetism and click ripple on cards
+   No React, no three.js, no GSAP — same behaviour, same prop names.
+   ============================================================ */
+
+/* ---------- Antigravity ---------- */
+#agCanvas{
+  position:absolute; inset:0; width:100%; height:100%;
+  z-index:1; pointer-events:none;
+}
+.lg-art > *{position:relative; z-index:2}
+
+/* ---------- Shuffle ---------- */
+.sh-w{display:inline-block; overflow:hidden; vertical-align:bottom}
+.sh-s{display:inline-flex; will-change:transform}
+.sh-c{display:inline-block; text-align:center; flex:none}
+
+/* dashboard particle field — sits behind the header, never intercepts clicks */
+.view .page{position:relative}
+.ag-dash{
+  position:absolute; top:-14px; left:0; right:0; height:330px;
+  width:100%; z-index:0; pointer-events:none; opacity:.5;
+  -webkit-mask-image:linear-gradient(180deg,#000 55%,transparent 100%);
+  mask-image:linear-gradient(180deg,#000 55%,transparent 100%);
+}
+.view .page > *:not(.ag-dash){position:relative; z-index:1}
+
+/* ---------- MagicBento ---------- */
+.mb{
+  --glow-x:50%; --glow-y:50%; --glow-intensity:0; --glow-radius:300px;
+  position:relative; overflow:hidden;
+  transform-style:preserve-3d;
+}
+/* border glow — gradient ring masked to the card's padding box */
+.mb::after{
+  content:''; position:absolute; inset:0; padding:2px; border-radius:inherit;
+  background:radial-gradient(var(--glow-radius) circle at var(--glow-x) var(--glow-y),
+    rgba(200,255,77,calc(var(--glow-intensity) * .85)) 0%,
+    rgba(200,255,77,calc(var(--glow-intensity) * .35)) 32%,
+    transparent 62%);
+  -webkit-mask:linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite:xor;
+  mask:linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  mask-composite:exclude;
+  pointer-events:none; z-index:2;
+}
+/* inner spotlight wash, also driven by --glow-* */
+.mb::before{
+  content:''; position:absolute; inset:0; border-radius:inherit; pointer-events:none; z-index:0;
+  background:radial-gradient(calc(var(--glow-radius) * .8) circle at var(--glow-x) var(--glow-y),
+    rgba(200,255,77,calc(var(--glow-intensity) * .07)), transparent 60%);
+}
+.mb > *{position:relative; z-index:1}
+.mb.lit{box-shadow:0 18px 46px -28px rgba(200,255,77,.55), 0 2px 0 rgba(255,255,255,.05) inset}
+
+/* the JS sets transform for tilt/magnetism, so drop the CSS hover lift */
+.mb-i:hover{transform:none}
+
+.mb-particle{
+  position:absolute; width:4px; height:4px; border-radius:50%;
+  background:var(--lime); box-shadow:0 0 7px rgba(200,255,77,.75);
+  pointer-events:none; z-index:3; opacity:0;
+  animation:mbSpawn .35s cubic-bezier(.22,1,.36,1) forwards, mbFloat var(--dur,4s) ease-in-out infinite alternate;
+}
+@keyframes mbSpawn{from{transform:scale(0)}to{transform:scale(1)}}
+@keyframes mbFloat{
+  from{opacity:.95; translate:0 0}
+  to{opacity:.28; translate:var(--dx) var(--dy)}
+}
+.mb-ripple{
+  position:absolute; border-radius:50%; pointer-events:none; z-index:4;
+  background:radial-gradient(circle, rgba(200,255,77,.32) 0%, rgba(200,255,77,.14) 30%, transparent 70%);
+  animation:mbRipple .8s cubic-bezier(.22,1,.36,1) forwards;
+}
+@keyframes mbRipple{from{transform:scale(0);opacity:1}to{transform:scale(1);opacity:0}}
+
+#mbSpotlight{
+  position:fixed; width:760px; height:760px; border-radius:50%; pointer-events:none;
+  transform:translate(-50%,-50%); z-index:24; opacity:0; mix-blend-mode:screen;
+  transition:opacity .3s ease;
+  background:radial-gradient(circle,
+    rgba(200,255,77,.13) 0%, rgba(200,255,77,.07) 16%, rgba(200,255,77,.035) 26%,
+    rgba(200,255,77,.015) 42%, transparent 68%);
+}
+
+/* effects are off on phones and for reduced-motion users */
+@media (max-width:768px){
+  #mbSpotlight{display:none}
+  .mb::before,.mb::after{display:none}
+}
+@media (prefers-reduced-motion:reduce){
+  #mbSpotlight,.mb::before,.mb::after,.mb-particle,.mb-ripple{display:none}
+}
